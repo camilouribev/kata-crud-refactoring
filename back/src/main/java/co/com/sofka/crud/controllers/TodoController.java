@@ -12,12 +12,11 @@ public class TodoController {
 
     @Autowired
     private TodoService service;
-
     @GetMapping(value = "/todos")
     public Iterable<Todo> list(){
         return service.list();
     }
-    
+
     @PostMapping(value = "/todo")
     public Todo save(@RequestBody Todo todo){
         return service.save(todo);
@@ -40,5 +39,4 @@ public class TodoController {
     public Todo get(@PathVariable("id") Long id){
         return service.get(id);
     }
-
 }

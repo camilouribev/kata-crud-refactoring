@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class ListToDo {
+public class List {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
