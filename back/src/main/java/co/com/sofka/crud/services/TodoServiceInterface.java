@@ -2,7 +2,10 @@ package co.com.sofka.crud.services;
 
 import co.com.sofka.crud.DTOs.ListDTO;
 import co.com.sofka.crud.DTOs.TodoDTO;
+import co.com.sofka.crud.entities.List;
+import co.com.sofka.crud.entities.Todo;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface TodoServiceInterface {

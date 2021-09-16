@@ -11,10 +11,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -29,21 +26,18 @@ public class TodoService implements TodoServiceInterface {
     private TodoService(ListRepository ListRepository, TodoRepository TodoRepository) {
         this.ListRepository = ListRepository;
         this.TodoRepository = TodoRepository;
-    }
+    };
 
-    ;
-
-    //Mapper de Listas
-    private ListDTO convertToListDTO(Set<TodoDTO> list) {
+    //Mapper de  Listas a ListaDTO
+    private ListDTO convertToListDTO(List list) {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
-        ListDTO ListDTO = modelMapper
+        ListDTO listdto = modelMapper
                 .map(list, ListDTO.class);
-        return ListDTO;
+        return listdto;
     }
 
-    //Mapper de ToDos
-
+    //Mapper de Todos a TodoDTO
     private TodoDTO convertToTodoDTO(Todo todo) {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
@@ -55,7 +49,7 @@ public class TodoService implements TodoServiceInterface {
     @Override
     public Set<TodoDTO> getToDosByList(Long listId) {
         try {
-            return ListRepository.findById(listId).get().getToDos().stream().map(todo -> convertToTodoDTO(todo)).collect(Collectors.toSet());
+            return  ListRepository.findById(listId).get().getToDos().stream().map(todo -> convertToTodoDTO(todo)).collect(Collectors.toSet());
         } catch (Exception e) {
             return null;
         }
@@ -66,7 +60,7 @@ public class TodoService implements TodoServiceInterface {
     public TodoDTO createToDoByList(Long listId, TodoDTO someTodoDTO) {
         List lista = ListRepository.findById(listId).orElseThrow();
 
-        Todo newToDo = new Todo(someTodoDTO.getId(), someTodoDTO.getNombre(), someTodoDTO.isTerminado() );
+        Todo newToDo = new Todo(someTodoDTO.getId(), someTodoDTO.getName(), someTodoDTO.isCompleted() );
         lista.getToDos().add(newToDo);
 
         List listaActualizada = ListRepository.save(lista);
@@ -76,15 +70,15 @@ public class TodoService implements TodoServiceInterface {
                 .max(Comparator.comparingInt(item -> item.getId().intValue()))
                 .orElseThrow();
         someTodoDTO.setId(lastToDo.getId());
-        someTodoDTO.setIdLista(listId);
+        someTodoDTO.setListId(listId);
         return someTodoDTO;
     }
 
     @Override
     public ListDTO createList(ListDTO someListDTO) {
-        var lista = new List();
-        lista.setName(Objects.requireNonNull(someListDTO.getNombre()));
-        var id = ListRepository.save(lista).getId();
+        List lista = new List();
+        lista.setName(Objects.requireNonNull(someListDTO.getName()));
+        Long id = ListRepository.save(lista).getId();
         someListDTO.setId(id);
         return someListDTO;
     }
@@ -94,18 +88,10 @@ public class TodoService implements TodoServiceInterface {
 
     @Override
     public Set<ListDTO> getAllLists(){
+
         return StreamSupport
                 .stream(ListRepository.findAll().spliterator(), false)
-                .map(toDoList -> {
-                    var listDto = toDoList.getToDos()
-                            .stream()
-                            .map(todo -> convertToTodoDTO(todo))
-                            .collect(Collectors.toSet());
-                    return convertToListDTO(listDto);
-                })
-
-                .collect(Collectors.toSet());
-
+                .map(list -> convertToListDTO(list)).collect(Collectors.toSet());
 
     }
 
@@ -116,8 +102,8 @@ public class TodoService implements TodoServiceInterface {
 
         for (Todo todo: lista.getToDos()){
             if(todo.getId().equals(oldTodo.getId())){
-                todo.setCompleted(oldTodo.isTerminado());
-                todo.setName(Objects.requireNonNull(oldTodo.getNombre()));
+                todo.setCompleted(oldTodo.isCompleted());
+                todo.setName(Objects.requireNonNull(oldTodo.getName()));
                 todo.setId(Objects.requireNonNull(oldTodo.getId()));
         }
 

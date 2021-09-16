@@ -3,15 +3,19 @@ package co.com.sofka.crud.DTOs;
 public class TodoDTO {
 
     private Long id;
-    private String nombre;
-    private boolean terminado;
-    private Long idLista;
+    private String name;
+    private boolean isCompleted;
+    private Long listId;
 
-    public TodoDTO(Long id, String nombre, boolean terminado, Long idLista) {
+    public TodoDTO(){
+        super();
+    }
+
+    public TodoDTO(Long id, String name, boolean isCompleted, Long listId) {
         this.id = id;
-        this.nombre = nombre;
-        this.terminado = terminado;
-        this.idLista = idLista;
+        this.name = name;
+        this.isCompleted = isCompleted;
+        this.listId = listId;
     }
 
     public Long getId() {
@@ -22,27 +26,27 @@ public class TodoDTO {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isTerminado() {
-        return terminado;
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    public void setTerminado(boolean terminado) {
-        this.terminado = terminado;
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
-    public Long getIdLista() {
-        return idLista;
+    public Long getListId() {
+        return listId;
     }
 
-    public void setIdLista(Long idLista) {
-        this.idLista = idLista;
+    public void setListId(Long listId) {
+        this.listId = listId;
     }
 }
