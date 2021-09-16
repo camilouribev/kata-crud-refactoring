@@ -5,13 +5,13 @@ public class TodoDTO {
     private Long id;
     private String nombre;
     private boolean terminado;
-    private String categoria;
+    private Long idLista;
 
-    public TodoDTO(Long id, String nombre, boolean terminado, String categoria) {
+    public TodoDTO(Long id, String nombre, boolean terminado, Long idLista) {
         this.id = id;
         this.nombre = nombre;
         this.terminado = terminado;
-        this.categoria = categoria;
+        this.idLista = idLista;
     }
 
     public Long getId() {
@@ -38,11 +38,11 @@ public class TodoDTO {
         this.terminado = terminado;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public Long getIdLista() {
+        return idLista;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setIdLista(Long idLista) {
+        this.idLista = idLista;
     }
 }

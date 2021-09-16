@@ -11,8 +11,11 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TodoService implements TodoServiceInterface {
@@ -30,7 +33,7 @@ public class TodoService implements TodoServiceInterface {
     ;
 
     //Mapper de Listas
-    private ListDTO convertToListDTO(List list) {
+    private ListDTO convertToListDTO(Set<TodoDTO> list) {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
         ListDTO ListDTO = modelMapper
@@ -48,49 +51,94 @@ public class TodoService implements TodoServiceInterface {
         return TodoDTO;
     }
 
-    public Set<TodoDTO> getTodosByList(Long listId) {
+    @Override
+    public Set<TodoDTO> getToDosByList(Long listId) {
         try {
             return ListRepository.findById(listId).get().getToDos().stream().map(todo -> convertToTodoDTO(todo)).collect(Collectors.toSet());
         } catch (Exception e) {
             return null;
         }
-
     }
 
 
     @Override
     public TodoDTO createToDoByList(Long listId, TodoDTO someTodoDTO) {
-        return null;
+        List lista = ListRepository.findById(listId).orElseThrow();
+
+        Todo newToDo = new Todo(someTodoDTO.getId(), someTodoDTO.getNombre(), someTodoDTO.isTerminado() );
+        lista.getToDos().add(newToDo);
+
+        List listaActualizada = ListRepository.save(lista);
+
+        var lastToDo = listaActualizada.getToDos()
+                .stream()
+                .max(Comparator.comparingInt(item -> item.getId().intValue()))
+                .orElseThrow();
+        someTodoDTO.setId(lastToDo.getId());
+        someTodoDTO.setIdLista(listId);
+        return someTodoDTO;
     }
 
     @Override
     public ListDTO createList(ListDTO someListDTO) {
-        return null;
+        var lista = new List();
+        lista.setName(Objects.requireNonNull(someListDTO.getNombre()));
+        var id = ListRepository.save(lista).getId();
+        someListDTO.setId(id);
+        return someListDTO;
+    }
     }
 
-    @Override
-    public Set<TodoDTO> getToDosByList(Long listId) {
-        return null;
-    }
+
 
     @Override
     public Set<ListDTO> getAllLists() {
-        return null;
+
+        return StreamSupport
+                .stream(ListRepository.findAll().spliterator(), false)
+                .map(toDoList -> {
+                    var listDto = toDoList.getToDos()
+                            .stream()
+                            .map(todo -> convertToTodoDTO(todo))
+                            .collect(Collectors.toSet());
+                    return convertToListDTO(listDto);
+                })
+                .collect(Collectors.toSet());
     }
 
     @Override
     public TodoDTO updateToDo(Long listId, TodoDTO oldTodo) {
-        return null;
+
+        List lista = ListRepository.findById(listId).orElseThrow();
+
+        for (Todo todo: lista.getToDos()){
+            if(todo.getId().equals(oldTodo.getId())){
+                todo.setCompleted(oldTodo.isTerminado());
+                todo.setName(Objects.requireNonNull(oldTodo.getNombre()));
+                todo.setId(Objects.requireNonNull(oldTodo.getId()));
+        }
+
+            ListRepository.save(lista);
+
+            return oldTodo;
+        }
+
     }
 
     @Override
     public void deleteToDo(Long todoId) {
+        Todo todo = TodoRepository.findById(todoId).orElseThrow();
+        TodoRepository.delete(todo);
+
 
     }
 
     @Override
     public void deleteList(Long listId) {
 
+        List lista = ListRepository.findById(listId)
+                .orElseThrow();
+        ListRepository.delete(lista);
     }
 
 

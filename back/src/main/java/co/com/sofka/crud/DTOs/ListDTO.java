@@ -1,13 +1,19 @@
 package co.com.sofka.crud.DTOs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ListDTO {
 
     private Long id;
     private String nombre;
+    private Set<TodoDTO> items = new HashSet<>();
 
-    public ListDTO(Long id, String nombre) {
+
+    public ListDTO(Long id, String nombre, Set<TodoDTO> items) {
         this.id = id;
         this.nombre = nombre;
+        this.items = items;
     }
 
     public Long getId() {

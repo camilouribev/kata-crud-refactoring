@@ -9,10 +9,17 @@ public class Todo {
     private Long id;
     private String name;
     private boolean completed;
-    private String category;
 
-    /*@ManyToOne(optional = false, cascade= CascadeType.ALL )
-    private ListToDo list;*/
+    public Todo(){
+
+    }
+    public Todo(Long id, String name, boolean completed) {
+        this.id = id;
+        this.name = name;
+        this.completed = completed;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -38,19 +45,6 @@ public class Todo {
         this.completed = completed;
     }
 
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
-  /*  public ListToDo getList() {
-       return list;
-    }
-
-    public void setList(ListToDo list) {
-        this.list = list;
-    }*/
 }
