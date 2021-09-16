@@ -1,11 +1,11 @@
 package co.com.sofka.crud.DTOs;
 
-public class ListToDoDTO {
+public class ListDTO {
 
     private Long id;
     private String nombre;
 
-    public ListToDoDTO(Long id, String nombre) {
+    public ListDTO(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
