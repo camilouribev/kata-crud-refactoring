@@ -1,17 +1,18 @@
 package co.com.sofka.crud.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class ListToDo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @OneToMany(mappedBy ="id",cascade = CascadeType.ALL,  orphanRemoval = true)
+    private Set<Todo> toDos;
 
     public Long getId() {
         return id;
@@ -28,4 +29,12 @@ public class ListToDo {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Todo> getToDos() {
+        return toDos;
+    }
+
+    public void setToDos(Set<Todo> toDos) {
+        this.toDos = toDos;
+   }
 }

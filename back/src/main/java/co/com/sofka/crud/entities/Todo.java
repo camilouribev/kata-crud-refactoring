@@ -5,14 +5,14 @@ import javax.persistence.*;
 @Entity
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private boolean completed;
     private String category;
 
-    @ManyToOne(optional = false, cascade= CascadeType.ALL )
-    private ListToDo list;
+    /*@ManyToOne(optional = false, cascade= CascadeType.ALL )
+    private ListToDo list;*/
 
     public Long getId() {
         return id;
@@ -46,11 +46,11 @@ public class Todo {
         this.category = category;
     }
 
-    public ListToDo getList() {
-        return list;
+  /*  public ListToDo getList() {
+       return list;
     }
 
     public void setList(ListToDo list) {
         this.list = list;
-    }
+    }*/
 }
