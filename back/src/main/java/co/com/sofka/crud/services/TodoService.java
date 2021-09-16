@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,13 +88,12 @@ public class TodoService implements TodoServiceInterface {
         someListDTO.setId(id);
         return someListDTO;
     }
-    }
+
 
 
 
     @Override
-    public Set<ListDTO> getAllLists() {
-
+    public Set<ListDTO> getAllLists(){
         return StreamSupport
                 .stream(ListRepository.findAll().spliterator(), false)
                 .map(toDoList -> {
@@ -103,7 +103,10 @@ public class TodoService implements TodoServiceInterface {
                             .collect(Collectors.toSet());
                     return convertToListDTO(listDto);
                 })
+
                 .collect(Collectors.toSet());
+
+
     }
 
     @Override
@@ -120,9 +123,9 @@ public class TodoService implements TodoServiceInterface {
 
             ListRepository.save(lista);
 
-            return oldTodo;
-        }
 
+        }
+        return oldTodo;
     }
 
     @Override

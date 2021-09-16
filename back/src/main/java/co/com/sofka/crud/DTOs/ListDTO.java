@@ -7,7 +7,7 @@ public class ListDTO {
 
     private Long id;
     private String nombre;
-    private Set<TodoDTO> items = new HashSet<>();
+    private Set<TodoDTO> items;
 
 
     public ListDTO(Long id, String nombre, Set<TodoDTO> items) {
@@ -30,5 +30,13 @@ public class ListDTO {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Set<TodoDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<TodoDTO> items) {
+        this.items = items;
     }
 }

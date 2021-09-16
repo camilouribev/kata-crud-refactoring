@@ -1,5 +1,7 @@
 package co.com.sofka.crud.controllers;
 
+import co.com.sofka.crud.DTOs.ListDTO;
+import co.com.sofka.crud.DTOs.TodoDTO;
 import co.com.sofka.crud.entities.Todo;
 import co.com.sofka.crud.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,36 +9,50 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(value = "api")
 public class TodoController {
 
+    private TodoService TodoService;
+
     @Autowired
-    private TodoService service;
-    @GetMapping(value = "/todos")
-    public Iterable<Todo> list(){
-        return service.list();
+    public TodoController(TodoService toDoListService) {
+        this.TodoService = TodoService;
     }
 
-    @PostMapping(value = "/todo")
-    public Todo save(@RequestBody Todo todo){
-        return service.save(todo);
+    @GetMapping(value = "api/lists")
+    public Iterable<ListDTO> getAllListToDos() {
+        return TodoService.getAllLists();
     }
 
-    @PutMapping(value = "/todo")
-    public Todo update(@RequestBody Todo todo){
-        if(todo.getId() != null){
-            return service.save(todo);
+    @GetMapping(value = "api/{listId}/todos")
+    public Iterable<TodoDTO> getToDosByListId(@PathVariable("listId") Long listId) {
+        return TodoService.getToDosByList(listId);
+    }
+
+    @PostMapping(value = "api/todolist")
+    public ListDTO newListToDo(@RequestBody ListDTO todoList) {
+        return TodoService.createList(todoList);
+    }
+
+    @DeleteMapping(value = "api/{id}/todolist")
+    public void deleteListById(@PathVariable("id") Long id) {
+        TodoService.deleteList(id);
+    }
+
+    @PutMapping(value = "api/{listId}/todo")
+    public TodoDTO updateAToDoByListId(@PathVariable("listId") Long listId, @RequestBody TodoDTO todo) {
+        if (todo.getId() != null) {
+            return TodoService.updateToDo(listId, todo);
         }
-        throw new RuntimeException("No existe el id para actualizar");
+        throw new RuntimeException();
     }
 
-    @DeleteMapping(value = "/{id}/todo")
-    public void delete(@PathVariable("id")Long id){
-        service.delete(id);
+    @PostMapping(value = "api/{listId}/todo")
+    public TodoDTO addNewToDoByListId(@PathVariable("listId") Long listId, @RequestBody TodoDTO todo) {
+        return TodoService.createToDoByList(listId, todo);
     }
 
-    @GetMapping(value = "/{id}/todo")
-    public Todo get(@PathVariable("id") Long id){
-        return service.get(id);
+    @DeleteMapping(value = "api/{id}/todo")
+    public void deleteAToDoById(@PathVariable("id") Long id) {
+        TodoService.deleteToDo(id);
     }
 }

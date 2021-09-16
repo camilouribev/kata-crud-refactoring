@@ -11,7 +11,7 @@ public class List {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy ="id",cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Todo> toDos;
 
     public Long getId() {
