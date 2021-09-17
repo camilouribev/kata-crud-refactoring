@@ -4,6 +4,7 @@ import co.com.sofka.crud.DTOs.ListDTO;
 import co.com.sofka.crud.DTOs.TodoDTO;
 import co.com.sofka.crud.entities.List;
 import co.com.sofka.crud.entities.Todo;
+import co.com.sofka.crud.exceptions.IdNotFound;
 import co.com.sofka.crud.repository.ListRepository;
 import co.com.sofka.crud.repository.TodoRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -34,22 +36,24 @@ public class TodoService implements TodoServiceInterface {
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
         ListDTO listdto = modelMapper
                 .map(list, ListDTO.class);
+
         return listdto;
     }
 
     //Mapper de Todos a TodoDTO
-    private TodoDTO convertToTodoDTO(Todo todo) {
+    private TodoDTO convertToTodoDTO(Todo todo, Long listId) {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
         TodoDTO TodoDTO = modelMapper
                 .map(todo, TodoDTO.class);
+        TodoDTO.setListId(listId);
         return TodoDTO;
     }
 
     @Override
     public Set<TodoDTO> getToDosByList(Long listId) {
         try {
-            return  ListRepository.findById(listId).get().getToDos().stream().map(todo -> convertToTodoDTO(todo)).collect(Collectors.toSet());
+            return  ListRepository.findById(listId).get().getToDos().stream().map(todo -> convertToTodoDTO(todo, listId)).collect(Collectors.toSet());
         } catch (Exception e) {
             return null;
         }
@@ -69,8 +73,9 @@ public class TodoService implements TodoServiceInterface {
                 .stream()
                 .max(Comparator.comparingInt(item -> item.getId().intValue()))
                 .orElseThrow();
-        someTodoDTO.setId(lastToDo.getId());
         someTodoDTO.setListId(listId);
+        someTodoDTO.setId(lastToDo.getId());
+
         return someTodoDTO;
     }
 
@@ -82,7 +87,6 @@ public class TodoService implements TodoServiceInterface {
         someListDTO.setId(id);
         return someListDTO;
     }
-
 
 
 
@@ -115,8 +119,8 @@ public class TodoService implements TodoServiceInterface {
     }
 
     @Override
-    public void deleteToDo(Long todoId) {
-        Todo todo = TodoRepository.findById(todoId).orElseThrow();
+    public void deleteToDo(Long id) {
+        Todo todo = TodoRepository.findById(id).orElseThrow(()-> new IdNotFound(id));
         TodoRepository.delete(todo);
 
 
@@ -125,10 +129,13 @@ public class TodoService implements TodoServiceInterface {
     @Override
     public void deleteList(Long listId) {
 
-        List lista = ListRepository.findById(listId)
-                .orElseThrow();
-        ListRepository.delete(lista);
+        List lista = ListRepository.findById(listId).orElseThrow(()-> new IdNotFound(listId));
+
+           ListRepository.delete(lista);
     }
 
 
 }
+
+
+

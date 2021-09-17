@@ -1,14 +1,18 @@
 package co.com.sofka.crud.entities;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message= "Debes escribir algo en el campo")
+    @Size(min=4, max = 100)
     private String name;
     private boolean completed;
+
 
     public Todo(){
     }

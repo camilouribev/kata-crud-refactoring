@@ -36,10 +36,12 @@ public class TodoController {
         return TodoService.createList(todoList);
     }
 
-    @DeleteMapping(value = "api/{id}/todolist")
-    public void deleteListById(@PathVariable("id") Long id) {
-        TodoService.deleteList(id);
+    @PostMapping(value = "api/{listId}/todo")
+    public TodoDTO addNewToDoByListId(@PathVariable("listId") Long listId, @RequestBody TodoDTO todo) {
+        return TodoService.createToDoByList(listId, todo);
     }
+
+
 
     @PutMapping(value = "api/{listId}/todo")
     public TodoDTO updateAToDoByListId(@PathVariable("listId") Long listId, @RequestBody TodoDTO todo) {
@@ -49,9 +51,10 @@ public class TodoController {
         throw new RuntimeException();
     }
 
-    @PostMapping(value = "api/{listId}/todo")
-    public TodoDTO addNewToDoByListId(@PathVariable("listId") Long listId, @RequestBody TodoDTO todo) {
-        return TodoService.createToDoByList(listId, todo);
+
+    @DeleteMapping(value = "api/{id}/todolist")
+    public void deleteListById(@PathVariable("id") Long id) {
+        TodoService.deleteList(id);
     }
 
     @DeleteMapping(value = "api/{id}/todo")

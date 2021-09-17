@@ -1,6 +1,8 @@
 package co.com.sofka.crud.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -9,9 +11,12 @@ public class List {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message= "Debes ponerle nombre a la lista de tareas")
+    @Size(min=4, max = 100)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany( cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Todo> toDos;
 
 

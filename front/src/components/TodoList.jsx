@@ -6,15 +6,15 @@ import { Store } from "../Provider";
 export default ({ listId, todo }) => {
   const { dispatch } = useContext(Store);
   const [isLoaded, setLoaded] = useState(false);
-  const list = todo.elements.filter((element) => {
-    return element.listId === listId;
+
+  const list = todo.elements.filter((task) => {
+    return task.listId === listId;
   });
 
   useEffect(() => {
     todoRequests.findAll(listId).then((response) => {
       if (response.ok) {
         response.json().then((items) => {
-          console.log(items);
           setLoaded(true);
           dispatch(TodoActions.found(listId, items));
         });

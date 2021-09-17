@@ -34,7 +34,7 @@ export default {
   },
 
   delete: async (id) => {
-    return fetch(API + id + "/todolist", {
+    return fetch(API + id + "/todo", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
