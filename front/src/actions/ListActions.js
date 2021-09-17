@@ -6,6 +6,6 @@ export const actionType = {
 
 export default {
   saved: (item) => ({ type: actionType.LIST_CREATED, item }),
-  finded: (list) => ({ type: actionType.LIST_FINDED, list }),
+  found: (list) => ({ type: actionType.LIST_FOUND, list }),
   deleted: (listId) => ({ type: actionType.LIST_DELETED, listId }),
 };

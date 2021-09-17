@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react";
 import { Store } from "../Provider";
-import actions from "../actions/Actions";
-import ActionCreators from "../actions/ActionCreators";
+import requests from "../api/listRequests";
+import ActionCreators from "../actions/ListActions";
 
 const Form = () => {
   const formRef = useRef(null);
@@ -11,7 +11,7 @@ const Form = () => {
 
   const onAdd = (event) => {
     event.preventDefault();
-    actions.save({ name: state.name }).then((response) => {
+    requests.save({ name: state.name }).then((response) => {
       if (response.ok) {
         response.json().then((list) => {
           dispatch(ActionCreators.saved(list));
@@ -33,7 +33,7 @@ const Form = () => {
         }}
       ></input>
 
-      <button onClick={onAdd}>Crear Categoría de Lista</button>
+      <button onClick={onAdd}>Crear categoría</button>
     </form>
   );
 };
