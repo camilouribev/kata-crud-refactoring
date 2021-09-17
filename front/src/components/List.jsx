@@ -17,7 +17,6 @@ function List() {
       if (response.ok) {
         response.json().then((list) => {
           dispatch(ListActions.found(list));
-          console.log("successful list");
         });
       }
       setLoaded(true);
@@ -27,7 +26,7 @@ function List() {
   const onDelete = (listId) => {
     listRequests.delete(listId).then((response) => {
       if (response.ok) {
-        dispatch(listRequests.deleted(listId));
+        dispatch(listRequests.delete(listId));
       }
     });
   };
@@ -35,18 +34,25 @@ function List() {
   return (
     <div>
       {!isLoaded && <div>Loading...</div>}
-      {list.elements.length === 0 && <div>empty list!</div>}
+      {list.elements.length === 0 && (
+        <div>No tienes actividades pendientes</div>
+      )}
       {list.elements.map((element) => {
         return (
           <div key={element.id} id={"list-to-do-" + element.id}>
-            <fieldset>
-              <legend>
-                {element.name.toUpperCase()}
-                <button onClick={() => onDelete(element.id)}>Eliminar</button>
+            <div className="column">
+              <legend className="ui header">
+                {element.name}
+                <button
+                  className="ui red mini button right floated"
+                  onClick={() => onDelete(element.id)}
+                >
+                  Eliminar
+                </button>
               </legend>
               <TodoForm listId={element.id} todo={todo} />
               <TodoList listId={element.id} todo={todo} />
-            </fieldset>
+            </div>
           </div>
         );
       })}

@@ -3,11 +3,9 @@ import listReducer from "./reducers/ListReducer";
 import todoReducer from "./reducers/TodoReducer";
 
 const initialState = {
-  todo: {
-    list: { elements: [] },
-    todo: { elements: [], item: {} },
-    message: {},
-  },
+  list: { elements: [] },
+  todo: { elements: [], item: {} },
+  message: {},
 };
 const Store = createContext(initialState);
 

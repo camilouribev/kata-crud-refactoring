@@ -6,7 +6,7 @@ import Form from "./components/Form";
 function App() {
   return (
     <StoreProvider>
-      <h3>To-Do List</h3>
+      <h2 className="ui header">Lista de actividades</h2>
       <Form />
       <List />
     </StoreProvider>

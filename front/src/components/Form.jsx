@@ -23,18 +23,24 @@ const Form = () => {
   };
 
   return (
-    <form ref={formRef}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Nueva categoría"
-        onChange={(event) => {
-          setState({ name: event.target.value });
-        }}
-      ></input>
+    <div className="ui form">
+      <form ref={formRef}>
+        <div className="ui input field">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nueva categoría"
+            onChange={(event) => {
+              setState({ name: event.target.value });
+            }}
+          ></input>
+        </div>
 
-      <button onClick={onAdd}>Crear categoría</button>
-    </form>
+        <button className="ui blue mini button" onClick={onAdd}>
+          Crear categoría
+        </button>
+      </form>
+    </div>
   );
 };
 
