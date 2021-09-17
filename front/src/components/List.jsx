@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Store } from "../Provider";
+import TodoForm from "./TodoForm";
+import TodoList from "./TodoList";
 
 const HOST_API = "http://localhost:8080/api";
 
@@ -66,27 +68,31 @@ function List() {
         <tbody>
           {currentList.map((todo) => {
             return (
-              <tr key={todo.id} style={todo.completed ? decorationDone : {}}>
-                <td>{todo.id}</td>
-                <td>{todo.name}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    defaultChecked={todo.completed}
-                    onChange={(event) => onChange(event, todo)}
-                  ></input>
-                </td>
-                <td>
-                  <button onClick={() => onDelete(todo.id)}>Eliminar</button>
-                </td>
-                <td>
-                  <button onClick={() => onEdit(todo)}>Editar</button>
-                </td>
-              </tr>
+              <div>
+                <tr key={todo.id} style={todo.completed ? decorationDone : {}}>
+                  <td>{todo.id}</td>
+                  <td>{todo.name}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={todo.completed}
+                      onChange={(event) => onChange(event, todo)}
+                    ></input>
+                  </td>
+                  <td>
+                    <button onClick={() => onDelete(todo.id)}>Eliminar</button>
+                  </td>
+                  <td>
+                    <button onClick={() => onEdit(todo)}>Editar</button>
+                  </td>
+                </tr>
+              </div>
             );
           })}
         </tbody>
       </table>
+      <TodoForm />
+      <TodoList />
     </div>
   );
 }

@@ -1,64 +1,25 @@
 import React, { useContext, useState, useRef } from "react";
 import { Store } from "../Provider";
-
-const HOST_API = "http://localhost:8080/api";
+import actions from "../actions/Actions";
+import ActionCreators from "../actions/ActionCreators";
 
 const Form = () => {
   const formRef = useRef(null);
-  const {
-    dispatch,
-    state: { todo },
-  } = useContext(Store);
-  const item = todo.item;
-  const [state, setState] = useState(item);
+  const { dispatch } = useContext(Store);
+
+  const [state, setState] = useState({ name: "" });
 
   const onAdd = (event) => {
     event.preventDefault();
-
-    const request = {
-      name: state.name,
-      id: null,
-      completed: false,
-    };
-
-    fetch(HOST_API + "/todo", {
-      method: "POST",
-      body: JSON.stringify(request),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((todo) => {
-        dispatch({ type: "add-item", item: todo });
-        setState({ name: "" });
-        formRef.current.reset();
-        console.log(todo);
-      });
-  };
-
-  const onEdit = (event) => {
-    event.preventDefault();
-
-    const request = {
-      name: state.name,
-      id: item.id,
-      isCompleted: item.isCompleted,
-    };
-
-    fetch(HOST_API + "/todo", {
-      method: "PUT",
-      body: JSON.stringify(request),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((todo) => {
-        dispatch({ type: "update-item", item: todo });
-        setState({ name: "" });
-        formRef.current.reset();
-      });
+    actions.save({ name: state.name }).then((response) => {
+      if (response.ok) {
+        response.json().then((list) => {
+          dispatch(ActionCreators.saved(list));
+          formRef.current.reset();
+          setState({ name: "" });
+        });
+      }
+    });
   };
 
   return (
@@ -66,14 +27,13 @@ const Form = () => {
       <input
         type="text"
         name="name"
-        placeholder="¿Qué piensas hacer hoy?"
-        defaultValue={item.name}
+        placeholder="Nueva categoría"
         onChange={(event) => {
-          setState({ ...state, name: event.target.value });
+          setState({ name: event.target.value });
         }}
       ></input>
-      {item.id && <button onClick={onEdit}>Actualizar</button>}
-      {!item.id && <button onClick={onAdd}>Crear</button>}
+
+      <button onClick={onAdd}>Crear Categoría de Lista</button>
     </form>
   );
 };
