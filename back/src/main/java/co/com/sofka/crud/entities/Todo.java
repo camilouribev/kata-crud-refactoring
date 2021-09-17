@@ -11,14 +11,13 @@ public class Todo {
     private boolean completed;
 
     public Todo(){
-
     }
+
     public Todo(Long id, String name, boolean completed) {
         this.id = id;
         this.name = name;
         this.completed = completed;
     }
-
 
 
     public Long getId() {
