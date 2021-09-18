@@ -6,9 +6,11 @@ import Form from "./components/Form";
 function App() {
   return (
     <StoreProvider>
-      <h2 className="ui header">Lista de actividades</h2>
-      <Form />
-      <List />
+      <div id="content" className="ui container">
+        <h2 className="ui header">Lista de actividades</h2>
+        <Form />
+        <List />
+      </div>
     </StoreProvider>
   );
 }

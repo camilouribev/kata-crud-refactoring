@@ -66,11 +66,11 @@ export default ({ listId, todo }) => {
   return (
     <div>
       {!isLoaded && <div>Loading...</div>}
-      <table>
+      <table className="ui very basic collapsing celled table">
         <thead>
           <tr>
-            <td className="ui label">Tarea</td>
-            <td className="ui label right floated"> Terminada</td>
+            <td className="task">Tarea</td>
+            <td className="done-indicator"> Terminada</td>
             <td></td>
           </tr>
         </thead>
@@ -87,18 +87,21 @@ export default ({ listId, todo }) => {
                   <div className="ui input">
                     <input
                       type="checkbox"
+                      minLength={3}
                       defaultChecked={todo.completed}
                       onChange={(event) => onChange(event, todo)}
                     ></input>
                   </div>
                 </td>
                 <td>
-                  <button
-                    className="ui red mini button right floated"
-                    onClick={() => onDelete(todo.id)}
-                  >
-                    Eliminar
-                  </button>
+                  <div className="eliminar-btn">
+                    <button
+                      className="ui red mini button right floated"
+                      onClick={() => onDelete(todo.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </td>
                 <td>
                   <button

@@ -1,29 +1,35 @@
 import React, { useContext, useState, useRef } from "react";
 import { Store } from "../Provider";
 import requests from "../api/listRequests";
-import ActionCreators from "../actions/ListActions";
+import listActions from "../actions/ListActions";
+import Alert from "../alerts/Alert";
 
 const Form = () => {
   const formRef = useRef(null);
   const { dispatch } = useContext(Store);
 
-  const [state, setState] = useState({ name: "" });
+  const [state, setState] = useState({ name: "", trigger: false });
 
   const onAdd = (event) => {
     event.preventDefault();
-    requests.save({ name: state.name }).then((response) => {
+    if (state.name.length < 3) {
+      setState({ name: "", trigger: true });
+      return;
+    }
+
+    requests.save({ name: state.name, trigger: false }).then((response) => {
       if (response.ok) {
         response.json().then((list) => {
-          dispatch(ActionCreators.saved(list));
+          dispatch(listActions.saved(list));
           formRef.current.reset();
-          setState({ name: "" });
+          setState({ name: "", trigger: false });
         });
       }
     });
   };
 
   return (
-    <div className="ui form">
+    <div className="ui form container">
       <form ref={formRef}>
         <div className="ui input field">
           <input
@@ -31,12 +37,15 @@ const Form = () => {
             name="name"
             placeholder="Nueva categoría"
             onChange={(event) => {
-              setState({ name: event.target.value });
+              setState({ name: event.target.value, trigger: false });
             }}
           ></input>
         </div>
-
-        <button className="ui blue mini button" onClick={onAdd}>
+        <Alert trigger={state.trigger} />
+        <button
+          className="ui inverted blue medium button right attached"
+          onClick={onAdd}
+        >
           Crear categoría
         </button>
       </form>

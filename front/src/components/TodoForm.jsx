@@ -2,14 +2,20 @@ import React, { useContext, useRef, useState } from "react";
 import todoRequests from "../api/todoRequests";
 import TodoActions from "../actions/TodoActions";
 import { Store } from "../Provider";
+import Alert from "../alerts/Alert";
 
 export default ({ listId, todo }) => {
   const formRef = useRef(null);
   const { dispatch } = useContext(Store);
   const item = todo.item[listId] ? todo.item[listId] : {};
-  const [state, setState] = useState(item);
+  const [state, setState] = useState({ item: item, trigger: false });
 
   const onAdd = (event) => {
+    if (state.name.length < 3) {
+      setState({ ...state, trigger: true });
+      setTimeout(() => {}, 3000);
+      return;
+    }
     event.preventDefault();
 
     const request = {
@@ -31,6 +37,11 @@ export default ({ listId, todo }) => {
 
   const onEdit = (event) => {
     event.preventDefault();
+    if (state.name.length < 3) {
+      setState({ ...state, trigger: true });
+      console.log(state.trigger);
+      return;
+    }
 
     const request = {
       name: state.name,
@@ -55,19 +66,21 @@ export default ({ listId, todo }) => {
         <input
           type="text"
           name="name"
-          placeholder="¿Qué piensas hacer?"
+          placeholder="Lista de tareas"
           defaultValue={item.name}
           onChange={(event) => {
             setState({ ...state, name: event.target.value });
           }}
         ></input>
       </div>
+
       {item.id && <button onClick={onEdit}>Actualizar</button>}
       {!item.id && (
         <button className="ui blue mini button" onClick={onAdd}>
           Crear
         </button>
       )}
+      <Alert trigger={state.trigger} />
     </form>
   );
 };

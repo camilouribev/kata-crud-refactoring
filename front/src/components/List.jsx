@@ -39,19 +39,30 @@ function List() {
       )}
       {list.elements.map((element) => {
         return (
-          <div key={element.id} id={"list-to-do-" + element.id}>
-            <div className="column">
-              <legend className="ui header">
-                {element.name}
+          <div
+            key={element.id}
+            id={"list-to-do-" + element.id}
+            className="todo-element"
+          >
+            <div>
+              <div className="ui header list-title">
+                <h2> {element.name}</h2>
+
                 <button
-                  className="ui red mini button right floated"
+                  className="ui red mini button delete-btn"
                   onClick={() => onDelete(element.id)}
                 >
                   Eliminar
                 </button>
-              </legend>
-              <TodoForm listId={element.id} todo={todo} />
-              <TodoList listId={element.id} todo={todo} />
+              </div>
+              <div className="container-list">
+                <div className="input-list">
+                  <TodoForm listId={element.id} todo={todo} />
+                </div>
+                <div className="element-list">
+                  <TodoList listId={element.id} todo={todo} />
+                </div>
+              </div>
             </div>
           </div>
         );
