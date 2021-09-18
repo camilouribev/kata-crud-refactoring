@@ -7,7 +7,9 @@ function App() {
   return (
     <StoreProvider>
       <div id="content" className="ui container">
-        <h2 className="ui header">Lista de actividades</h2>
+        <h1 className="ui header">
+          <strong>Listas de actividades</strong>{" "}
+        </h1>
         <Form />
         <List />
       </div>

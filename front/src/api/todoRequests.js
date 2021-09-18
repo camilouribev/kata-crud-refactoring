@@ -1,12 +1,6 @@
-// import todoAPI from "./todoAPI";
-
 const API = "http://localhost:8080/api/";
 
 export default {
-  // findAll: async (listId) => {
-  //   return todoAPI.get(`${listId}/todos`);
-  // },
-
   findAll: async (listId) => {
     return fetch(API + listId + "/todos").catch((error) =>
       console.error("Error:", error)

@@ -10,6 +10,7 @@ const initialState = {
 const Store = createContext(initialState);
 
 const merge = { ...listReducer(), ...todoReducer() };
+
 function reducer(state, action) {
   return merge[action.type] ? merge[action.type](state, action) : state;
 }

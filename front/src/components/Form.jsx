@@ -31,7 +31,7 @@ const Form = () => {
   return (
     <div className="ui form container">
       <form ref={formRef}>
-        <div className="ui input field">
+        <div className="ui input">
           <input
             type="text"
             name="name"

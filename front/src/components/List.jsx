@@ -44,17 +44,14 @@ function List() {
             id={"list-to-do-" + element.id}
             className="todo-element"
           >
+            <button
+              className="ui inverted red medium button delete-btn quit-btn"
+              onClick={() => onDelete(element.id)}
+            >
+              X
+            </button>
             <div>
-              <div className="ui header list-title">
-                <h2> {element.name}</h2>
-
-                <button
-                  className="ui red mini button delete-btn"
-                  onClick={() => onDelete(element.id)}
-                >
-                  Eliminar
-                </button>
-              </div>
+              <h2> {element.name}</h2>
               <div className="container-list">
                 <div className="input-list">
                   <TodoForm listId={element.id} todo={todo} />

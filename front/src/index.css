@@ -1,7 +1,11 @@
 body {
   padding: 100px;
   text-align: center;
-  background-color: antiquewhite;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 1) 24%,
+    rgba(255, 241, 215, 0.8491771708683473) 99%
+  );
 }
 
 code {
@@ -15,37 +19,47 @@ code {
   contain: layout inline-size;
 }
 
-.list-title {
-  align-items: baseline;
-}
-
 .delete-btn {
   float: right;
-}
-
-.create {
-  align-items: center;
-}
-.message {
-  margin: 70px;
 }
 
 .input-list {
   align-items: center;
 }
 
+.todo-element {
+  border: 1px solid rgb(236, 229, 229);
+  margin-top: 6%;
+  padding-top: 0%;
+}
 .element-list {
   padding-top: 5%;
 }
 
-.eliminar-btn {
-  float: right;
-}
-
 .task {
-  background-color: #f3f3f3;
+  min-width: 250px;
 }
 
-.done-indicator {
-  background-color: pink;
+.container-list {
+  padding: 20px;
+}
+.checkbox-center {
+  text-align: center;
+  min-width: 70ox; /* for illustration only */
+}
+.center-td {
+  text-align: center;
+  /* center checkbox horizontally */
+}
+
+h2 {
+  padding-top: 4%;
+}
+
+h1 {
+  padding-bottom: 10%;
+}
+
+.quit-btn {
+  margin-right: 0px;
 }

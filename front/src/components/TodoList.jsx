@@ -69,8 +69,13 @@ export default ({ listId, todo }) => {
       <table className="ui very basic collapsing celled table">
         <thead>
           <tr>
-            <td className="task">Tarea</td>
-            <td className="done-indicator"> Terminada</td>
+            <td className="task center-td">
+              <h4>Tarea</h4>
+            </td>
+            <td className="">
+              {" "}
+              <h4>Terminada</h4>
+            </td>
             <td></td>
           </tr>
         </thead>
@@ -82,35 +87,33 @@ export default ({ listId, todo }) => {
                 style={todo.completed ? decorationDone : {}}
                 id={"to-do-" + todo.id}
               >
-                <td>{todo.name}</td>
+                <td className="task">{todo.name}</td>
                 <td>
-                  <div className="ui input">
+                  <div className="checkbox-center">
                     <input
                       type="checkbox"
-                      minLength={3}
+                      className="checkbox-center"
                       defaultChecked={todo.completed}
                       onChange={(event) => onChange(event, todo)}
                     ></input>
                   </div>
                 </td>
-                <td>
+                <td className="checkbox-center">
                   <div className="eliminar-btn">
                     <button
-                      className="ui red mini button right floated"
+                      className="circular ui inverted red icon button left floated "
                       onClick={() => onDelete(todo.id)}
                     >
-                      Eliminar
+                      <i className="fas fa-trash"></i>
+                    </button>
+                    <button
+                      className="circular ui inverted green icon button right floated"
+                      disabled={todo.completed}
+                      onClick={() => onEdit(todo)}
+                    >
+                      <i className="fas fa-edit"></i>
                     </button>
                   </div>
-                </td>
-                <td>
-                  <button
-                    className="ui green mini button right floated"
-                    disabled={todo.completed}
-                    onClick={() => onEdit(todo)}
-                  >
-                    Editar
-                  </button>
                 </td>
               </tr>
             );

@@ -74,10 +74,20 @@ export default ({ listId, todo }) => {
         ></input>
       </div>
 
-      {item.id && <button onClick={onEdit}>Actualizar</button>}
+      {item.id && (
+        <button
+          className="ui inverted blue medium button right attached"
+          onClick={onEdit}
+        >
+          Actualizar
+        </button>
+      )}
       {!item.id && (
-        <button className="ui blue mini button" onClick={onAdd}>
-          Crear
+        <button
+          className="ui inverted blue medium button right attached"
+          onClick={onAdd}
+        >
+          + Tarea
         </button>
       )}
       <Alert trigger={state.trigger} />

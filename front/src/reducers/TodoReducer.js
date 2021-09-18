@@ -35,12 +35,10 @@ function todoReducer() {
 
   action[actionType.LIST_DELETED] = (state, action) => {
     const list = state.todo.elements.filter((element) => {
-      console.log(element);
       return element.id !== action.itemId;
     });
     return { ...state, todo: { elements: list, item: {} } };
   };
-  //
 
   return action;
 }
